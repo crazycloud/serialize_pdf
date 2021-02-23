@@ -150,7 +150,6 @@ def get_xml_dom(document_path):
     """
     if not shutil.which(PDFTOTEXT_PATH):
         logger.error("pdftotext not found")
-        raise
         
     xml = subprocess.check_output([PDFTOTEXT_PATH,"-bbox-layout", document_path, "-"])
 
@@ -239,16 +238,12 @@ def serialize(document_path):
     "text" - full text of the document. removes next line characters
     }
     """
-    #fout = open('test.log','w')
-    start = time.time()
     dom = get_xml_dom(document_path)
     
-    #time.time() - start
     box_generator = pdf_to_bboxes(dom)
 
     box_generator = mark_eol_hyphens(box_generator)
 
-    boxes = []
     page_running_boxes=[]
     page_boxes={}
     text = []
